@@ -1,0 +1,8 @@
+# lychee ignore patterns (one regex per line).
+#
+# Self-referential raw asset URLs pinned to this repo's main branch. The
+# profile README must use absolute raw URLs (org-profile relative paths have
+# a documented render gotcha), but those URLs 404 to lychee until the PR that
+# adds them merges to main — a chicken-and-egg the link check can't resolve.
+# They render correctly the moment the squash lands; skip them here.
+^https://raw\.githubusercontent\.com/telaron-labs/\.github/main/

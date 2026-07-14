@@ -1,0 +1,14 @@
+{
+  // Line-length can't sanely apply to structurally-fixed lines: table rows
+  // don't wrap, fenced code examples must stay verbatim, and reference-link
+  // entries live one-per-line. Keep the rule for prose only.
+  "config": {
+    "MD013": {
+      "line_length": 100,
+      "code_blocks": false,
+      "tables": false
+    }
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules", ".git"]
+}

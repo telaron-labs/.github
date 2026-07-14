@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  @font-face { font-family:'D-DIN Exp'; src:url(data:font/woff;base64,@@DDINEXPBOLD@@) format('woff'); font-weight:700; font-display:block; }
+  * { margin:0; padding:0; } html,body { width:440px; height:440px; background:#0a0b12; }
+</style></head><body>
+<svg width="440" height="440" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="patchClip"><circle cx="100" cy="100" r="71"/></clipPath>
+    <!-- upper arc for the wordmark, drawn left→right over the top -->
+    <path id="topArc" d="M41.5 44 A81 81 0 0 1 158.5 44" fill="none"/>
+    <linearGradient id="gLimb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6ee7b7" stop-opacity="0"/>
+      <stop offset=".55" stop-color="#6ee7b7" stop-opacity=".9"/>
+      <stop offset=".8" stop-color="#22d3ee" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gTraj" gradientUnits="userSpaceOnUse" x1="64" y1="128" x2="146" y2="54">
+      <stop offset="0" stop-color="#6ee7b7" stop-opacity=".12"/>
+      <stop offset=".55" stop-color="#6ee7b7" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#c8f5e3" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="#0a0b12"/>
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#2e3150" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="72" fill="none" stroke="#23253a" stroke-width="1"/>
+  <g clip-path="url(#patchClip)">
+    <rect x="28" y="28" width="144" height="144" fill="#0a0b12"/>
+    <!-- southern cross inside the patch -->
+    <g fill="#e4e4ef">
+      <circle cx="66" cy="52" r="1.5" opacity=".5"/>
+      <circle cx="70" cy="82" r="2" opacity=".65"/>
+      <circle cx="54" cy="68" r="1.6" opacity=".5"/>
+      <circle cx="80" cy="64" r="1.4" opacity=".45"/>
+    </g>
+    <circle cx="130" cy="46" r="1.2" fill="#e4e4ef" opacity=".3"/>
+    <circle cx="100" cy="212" r="116" fill="#12142a"/>
+    <circle cx="100" cy="212" r="116" fill="none" stroke="url(#gLimb)" stroke-width="2.4"/>
+    <circle cx="64" cy="128" r="1.6" fill="#6ee7b7" opacity=".5"/>
+    <path d="M64 128 Q80 62 146 54" fill="none" stroke="url(#gTraj)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="146" cy="54" r="4.4" fill="#fbbf24"/>
+    <circle cx="146" cy="54" r="9" fill="#fbbf24" opacity=".2"/>
+  </g>
+  <!-- wordmark centred along the top arc -->
+  <text font-family="D-DIN Exp" font-weight="700" font-size="12" letter-spacing="4" fill="#c4c4d8">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">TELARON LABS</textPath>
+  </text>
+  <!-- small star at the bottom for balance -->
+  <path d="M100 170 L101.6 175 L106.6 175 L102.5 178.2 L104 183 L100 180 L96 183 L97.5 178.2 L93.4 175 L98.4 175 Z" fill="#6ee7b7" opacity=".55"/>
+</svg>
+</body></html>

@@ -1,0 +1,11 @@
+{
+  // Profile subtree only. GitHub org-profile READMEs render as a landing page,
+  // which requires inline HTML (centred layout, sized images) and opens on a
+  // banner rather than a heading; absolute raw asset URLs also exceed the prose
+  // width. Relax those three rules here; the root README stays strict.
+  "config": {
+    "MD033": false,
+    "MD041": false,
+    "MD013": false
+  }
+}

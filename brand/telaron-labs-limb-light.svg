@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="gLimb" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6ee7b7" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#6ee7b7" stop-opacity=".9"/>
+      <stop offset="80%" stop-color="#22d3ee" stop-opacity=".3"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gTraj" gradientUnits="userSpaceOnUse" x1="116" y1="148" x2="170" y2="44">
+      <stop offset="0%" stop-color="#6ee7b7" stop-opacity=".12"/>
+      <stop offset="55%" stop-color="#6ee7b7" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#c8f5e3" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="200" height="200" fill="#0a0b12"/>
+
+  <!-- southern cross, flag layout: γ top · α bottom (brightest) · β left · δ right · ε small -->
+  <circle cx="52" cy="38" r="1.6" fill="#e4e4ef" fill-opacity=".5"/>
+  <circle cx="56" cy="78" r="2.1" fill="#e4e4ef" fill-opacity=".65"/>
+  <circle cx="38" cy="60" r="1.7" fill="#e4e4ef" fill-opacity=".5"/>
+  <circle cx="67" cy="54" r="1.5" fill="#e4e4ef" fill-opacity=".45"/>
+  <circle cx="60" cy="65" r="1" fill="#e4e4ef" fill-opacity=".35"/>
+  <!-- field stars -->
+  <circle cx="92" cy="30" r="1.2" fill="#e4e4ef" fill-opacity=".28"/>
+  <circle cx="146" cy="88" r="1.3" fill="#e4e4ef" fill-opacity=".3"/>
+  <circle cx="152" cy="24" r="1" fill="#e4e4ef" fill-opacity=".22"/>
+  <circle cx="22" cy="106" r="1.2" fill="#e4e4ef" fill-opacity=".26"/>
+  <circle cx="106" cy="58" r="1" fill="#e4e4ef" fill-opacity=".2"/>
+  <circle cx="184" cy="98" r="1.2" fill="#e4e4ef" fill-opacity=".28"/>
+  <circle cx="132" cy="116" r="1" fill="#e4e4ef" fill-opacity=".2"/>
+
+  <!-- planet + limb light -->
+  <circle cx="100" cy="270" r="142" fill="#12142a"/>
+  <circle cx="100" cy="270" r="142" fill="none" stroke="url(#gLimb)" stroke-width="3"/>
+
+  <!-- launch site on the surface; ascent glow at limb break -->
+  <circle cx="116" cy="148" r="1.8" fill="#6ee7b7" fill-opacity=".5"/>
+  <circle cx="119" cy="129" r="7" fill="#6ee7b7" fill-opacity=".12"/>
+  <path d="M116 148 Q120 68 170 44" fill="none" stroke="url(#gTraj)" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- vehicle -->
+  <circle cx="170" cy="44" r="4.5" fill="#fbbf24"/>
+  <circle cx="170" cy="44" r="9" fill="#fbbf24" fill-opacity=".2"/>
+  <circle cx="170" cy="44" r="15" fill="#fbbf24" fill-opacity=".08"/>
+</svg>

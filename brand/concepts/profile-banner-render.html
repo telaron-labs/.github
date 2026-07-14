@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  @font-face { font-family:'D-DIN Exp'; src:url(data:font/woff;base64,@@DDINEXP@@) format('woff'); font-weight:400; font-display:block; }
+  @font-face { font-family:'D-DIN Exp'; src:url(data:font/woff;base64,@@DDINEXPBOLD@@) format('woff'); font-weight:700; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1280px; height:320px; background:#0a0b12; overflow:hidden; }
+  .banner { position:relative; width:1280px; height:320px; background:#0a0b12; }
+  .banner svg.scene { position:absolute; inset:0; width:1280px; height:320px; }
+  .copy { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; text-align:center; padding-top:66px; }
+  .wordmark { font-family:'D-DIN Exp'; font-weight:700; text-transform:uppercase; letter-spacing:.36em; font-size:60px; color:#f4f4f8; text-indent:.36em; line-height:1;
+    text-shadow:0 2px 20px rgba(10,11,18,.9), 0 0 6px rgba(10,11,18,.7); }
+  .mantra { font-family:'D-DIN Exp'; font-weight:400; text-transform:uppercase; letter-spacing:.44em; font-size:16px; color:#8ff0c8; text-indent:.44em; margin-top:20px;
+    text-shadow:0 1px 14px rgba(10,11,18,.95), 0 0 4px rgba(10,11,18,.9); }
+  .divider { width:46px; height:2px; margin-top:22px; background:linear-gradient(90deg,transparent,#6ee7b7,transparent); opacity:.8; }
+</style></head><body>
+<div class="banner">
+  <svg class="scene" viewBox="0 0 1280 320" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="gLimb" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6ee7b7" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#6ee7b7" stop-opacity=".82"/>
+        <stop offset=".78" stop-color="#22d3ee" stop-opacity=".32"/>
+        <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="gTraj" gradientUnits="userSpaceOnUse" x1="980" y1="290" x2="1160" y2="72">
+        <stop offset="0" stop-color="#6ee7b7" stop-opacity=".1"/>
+        <stop offset=".55" stop-color="#6ee7b7" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#c8f5e3" stop-opacity="1"/>
+      </linearGradient>
+      <radialGradient id="gVignette" cx=".5" cy=".34" r=".8">
+        <stop offset="0" stop-color="#0a0b12" stop-opacity="0"/>
+        <stop offset=".62" stop-color="#0a0b12" stop-opacity=".22"/>
+        <stop offset="1" stop-color="#0a0b12" stop-opacity=".62"/>
+      </radialGradient>
+    </defs>
+
+    <!-- southern cross, left field (flag layout) -->
+    <g fill="#e4e4ef">
+      <circle cx="120" cy="66" r="2.2" opacity=".5"/>
+      <circle cx="138" cy="150" r="2.9" opacity=".7"/>
+      <circle cx="74" cy="112" r="2.4" opacity=".5"/>
+      <circle cx="166" cy="100" r="2.1" opacity=".45"/>
+      <circle cx="138" cy="120" r="1.4" opacity=".35"/>
+    </g>
+    <!-- peppered field stars across the top -->
+    <g fill="#e4e4ef">
+      <circle cx="300" cy="48" r="1.6" opacity=".28"/>
+      <circle cx="470" cy="80" r="1.3" opacity=".22"/>
+      <circle cx="640" cy="38" r="1.7" opacity=".28"/>
+      <circle cx="820" cy="66" r="1.2" opacity=".2"/>
+      <circle cx="980" cy="40" r="1.5" opacity=".26"/>
+      <circle cx="1210" cy="60" r="1.6" opacity=".28"/>
+      <circle cx="1120" cy="150" r="1.2" opacity=".2"/>
+      <circle cx="240" cy="120" r="1.1" opacity=".18"/>
+    </g>
+
+    <!-- planet limb sweeping the full width, low (apex ~y230) -->
+    <circle cx="640" cy="1230" r="1000" fill="#12142a"/>
+    <circle cx="640" cy="1230" r="1000" fill="none" stroke="url(#gLimb)" stroke-width="3"/>
+
+    <!-- launch site on the surface (right of centre) + trajectory to vehicle -->
+    <circle cx="980" cy="290" r="2.4" fill="#6ee7b7" opacity=".55"/>
+    <circle cx="1000" cy="250" r="10" fill="#6ee7b7" opacity=".1"/>
+    <path d="M980 290 Q1035 120 1160 72" fill="none" stroke="url(#gTraj)" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="1160" cy="72" r="6" fill="#fbbf24"/>
+    <circle cx="1160" cy="72" r="13" fill="#fbbf24" opacity=".2"/>
+    <circle cx="1160" cy="72" r="22" fill="#fbbf24" opacity=".07"/>
+
+    <rect width="1280" height="320" fill="url(#gVignette)"/>
+  </svg>
+  <div class="copy">
+    <div class="wordmark">Telaron&nbsp;Labs</div>
+    <div class="mantra">From orbit to backyard</div>
+    <div class="divider"></div>
+  </div>
+</div>
+</body></html>
