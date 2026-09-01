@@ -11,18 +11,16 @@ production-grade and held to the same bar.
 
 ---
 
-### 🛰️ Telaron — the multi-cloud fabric
+### 🛰️ [Telaron](https://telaron.io) — simplified multi-cloud fabric
 
-One control plane stitching networks across clouds into a single, observable
-fabric. Infrastructure-as-code from day one, five-nines by design.
+One pane-of-glass stitching networks across clouds, datacenters and edges into a single, 
+observable fabric. Everything-as-code from day one.
 
-[telaron.io](https://telaron.io) · [fabric-proto](https://github.com/telaron-labs/fabric-proto) — wire contracts (Apache 2.0)
-
-### 🐾 Mokii — the pet-safety net
+### 🐾 [Mokii](https://mokii.au) — pet-safety guardian angel
 
 A quiet safety net for pets — geofenced, calm, always watching the one thing
 that matters. Warm where the fabric is technical; the same engineering
-underneath. _Public presence coming soon._
+underneath.
 
 ---
 
