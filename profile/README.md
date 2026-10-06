@@ -74,7 +74,7 @@ infrastructure and enterprise IT:
 ## Contact
 
 - Mokii support: [support@mokii.au](mailto:support@mokii.au)
-- Telaron Labs, a registered business name, Australia
+- Telaron Fabric: [hi@telaron.io](mailto:hi@telaron.io)
 
 ---
 
