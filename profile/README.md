@@ -14,9 +14,9 @@ production-grade and held to the same bar.
 ## About
 
 Telaron Labs is an independent Australian venture lab building software for two
-problems: pets left alone at home with nobody noticing, and the complexity of
-connecting networks across clouds. It serves pet-owning households (consumers)
-and, later, platform and infrastructure teams.
+problems: pets left alone at home with nobody noticing, and the cost and
+complexity of connecting networks across clouds. It serves pet-owning
+households (Mokii) and cloud platform and infrastructure teams (Telaron fabric).
 
 ## Products
 
@@ -35,9 +35,21 @@ checks on them.
 - **Business model:** household subscription via Google Play, with a free tier
   during alpha
 
-### 🛰️ Telaron fabric — early-stage R&D
+### 🛰️ Telaron fabric — multi-cloud networking
 
-Research into multi-cloud connectivity tooling. Pre-product; no public release.
+A multi-cloud networking platform for engineering teams running workloads
+across Google Cloud and AWS. Connecting clouds today usually means stitching
+together each provider's managed transit services, paying per-gigabyte
+processing fees, and managing routing and security policy separately in every
+cloud. Telaron replaces that with a single fabric of lightweight gateways,
+deployed and run by an orchestrator, that connects landing zones, routes
+traffic between them and enforces network policy written as code.
+
+- **Stage:** pre-alpha. Gateway-to-gateway transit, automated failover and
+  policy delivery are working in our Google Cloud development environment.
+- **Next:** AWS landing-zone support and cross-cloud routing, then an alpha
+  with design partners.
+- **Model:** an open-source gateway with a hosted control plane.
 
 ## Team
 
