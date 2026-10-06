@@ -28,7 +28,7 @@ When everyone has left home and pets are alone, Mokii notices and escalates to
 a circle of people the household chooses (push, SMS, then a call) so someone
 checks on them.
 
-- **Platform:** Android
+- **Platform:** Android; iOS planned next, targeting December 2026 to January 2027
 - **Stage:** private alpha on Google Play's internal track; open testing and
   public launch planned for October 2026
 - **Built on:** Google Cloud (Cloud Run, Firestore, Firebase)
