@@ -38,7 +38,8 @@ checks on them.
 ### 🛰️ Telaron fabric — multi-cloud networking
 
 A multi-cloud networking platform for engineering teams running workloads
-across Google Cloud and AWS. Connecting clouds today usually means stitching
+across disparate environments (Phase 1: AWS + GCP, Phase 2: OCI, Azure, OVA/Onprem). 
+Connecting clouds today usually means stitching
 together each provider's managed transit services, paying per-gigabyte
 processing fees, and managing routing and security policy separately in every
 cloud. Telaron replaces that with a single fabric of lightweight gateways,
