@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="mokii Guardian mark">
+  <!--
+    Guardian mark — full colour. Gradient shield with a white paw in
+    negative space. Vertical brand gradient 3D6BDC -> 1943B0.
+    The paw is inset x21 y22 w58 h58 (scaled from its own 0..100 space).
+  -->
+  <defs>
+    <linearGradient id="mokiiGuardianGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3D6BDC"/>
+      <stop offset="1" stop-color="#1943B0"/>
+    </linearGradient>
+  </defs>
+  <!-- Shield -->
+  <path fill="url(#mokiiGuardianGrad)" d="M50 6 L83 18 C85 19 86 21 86 23 L86 50 C86 71 71 87 51 94 A3 3 0 0 1 49 94 C29 87 14 71 14 50 L14 23 C14 21 15 19 17 18 Z"/>
+  <!--
+    Paw, white. Authored directly at the mark's inset: each source coord
+    (0..100 paw space) mapped by x' = 21 + x*0.58, y' = 22 + y*0.58.
+    Metacarpal pad (rounded triangle) + four angled toe beans.
+  -->
+  <g fill="#fff">
+    <path d="M50 50.42 C57.38 50.42 63.16 55.22 65.05 61.6 C66.62 66.53 64.29 71.46 58.47 72.04 C55.07 72.33 53.16 70.59 50 70.59 C46.84 70.59 44.93 72.33 41.53 72.04 C35.71 71.46 33.38 66.53 34.95 61.6 C36.84 55.22 42.62 50.42 50 50.42 Z"/>
+    <ellipse cx="34.63" cy="46.94" rx="4.64" ry="6.38" transform="rotate(-24 34.63 46.94)"/>
+    <ellipse cx="44.78" cy="39.98" rx="4.87" ry="6.96" transform="rotate(-8 44.78 39.98)"/>
+    <ellipse cx="55.22" cy="39.98" rx="4.87" ry="6.96" transform="rotate(8 55.22 39.98)"/>
+    <ellipse cx="65.37" cy="46.94" rx="4.64" ry="6.38" transform="rotate(24 65.37 46.94)"/>
+  </g>
+</svg>
