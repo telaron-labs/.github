@@ -55,9 +55,11 @@ traffic between them and enforces network policy written as code.
 
 | Member | Role | Location |
 | --- | --- | --- |
-| [Julien Bonastre](https://www.linkedin.com/in/julien-bonastre) | Founder and sole developer | Melbourne, Australia |
+| [Julien Bonastre](https://www.linkedin.com/in/julien-bonastre) | Founder; architect and engineer | Melbourne, Australia |
 
-Julien is a software, network and cloud engineer whose career spans critical
+Julien is a hands-on architect and engineer who works across the whole
+lifecycle, from architecture and solution design through engineering,
+operations and support to deep fault diagnosis. His career spans critical
 infrastructure and enterprise IT:
 
 - **Critical infrastructure:** real-time fire and life-safety systems, SCADA,
