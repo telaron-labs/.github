@@ -45,8 +45,17 @@ Research into multi-cloud connectivity tooling. Pre-product; no public release.
 | --- | --- | --- |
 | [Julien Bonastre](https://www.linkedin.com/in/julien-bonastre) | Founder and sole developer | Melbourne, Australia |
 
-Julien is a cloud and platform engineer with a background in multi-cloud
-infrastructure, networking and infrastructure as code.
+Julien is a software, network and cloud engineer whose career spans critical
+infrastructure and enterprise IT:
+
+- **Critical infrastructure:** real-time fire and life-safety systems, SCADA,
+  controls and industrial automation, and Intelligent Transport Systems,
+  including distributed motorway networking and control systems.
+- **Distributed systems:** multi-site, containerised real-time monitoring
+  platforms built with polyglot services, log analytics and metrics pipelines.
+- **Cloud and security:** multi-cloud platforms, network engineering across
+  industrial and enterprise environments, zero-trust security and
+  everything-as-code.
 
 ## Contact
 
