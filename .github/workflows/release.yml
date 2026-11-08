@@ -1,0 +1,264 @@
+# Reusable release train, shared by every mokii repo. Cuts a vX.Y.Z tag and a
+# GitHub Release in two steps, so the tag sits on the commit that carries its
+# own changelog.
+#
+# 1. prepare (caller event workflow_dispatch): works out the next version, folds
+#    changelog.d/ and Unreleased into a `## [vX.Y.Z]` section of CHANGELOG.md on
+#    branch release/vX.Y.Z and opens "chore(release): vX.Y.Z" as the App. CI
+#    promotes and merges it like any PR. With dry_run it stops after printing
+#    the computed version and the folded section.
+# 2. publish (caller event pull_request closed): when that PR merges, the merge
+#    commit is tagged and the GitHub Release published with the folded section
+#    as its notes. Both steps use the App token; a release published by the
+#    default GITHUB_TOKEN would not trigger downstream workflows.
+#
+# The caller owns the triggers, the concurrency group and
+# `permissions: contents: read, id-token: write`.
+name: release (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      bump:
+        description: "auto | patch | minor | major (auto = from conventional commits since the last release)"
+        type: string
+        default: auto
+      dry_run:
+        description: "Print the computed version and folded changelog, then stop before any push"
+        type: boolean
+        default: false
+      runs_on:
+        description: "JSON array of runner labels"
+        type: string
+        required: true
+      wif_provider:
+        type: string
+        required: true
+      ci_sa_email:
+        type: string
+        required: true
+      deploy_sa_email:
+        type: string
+        required: true
+      app_id:
+        description: "GitHub App id that opens the PR and publishes the release"
+        type: string
+        required: true
+      secret_project:
+        description: "GCP project holding the github-app-private-key secret"
+        type: string
+        required: true
+      tools_ref:
+        description: "Ref of telaron-labs/.github that supplies fold_changelog.py"
+        type: string
+        default: main
+
+jobs:
+  prepare:
+    name: open release PR
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ${{ fromJSON(inputs.runs_on) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: telaron-labs/.github
+          ref: ${{ inputs.tools_ref }}
+          path: .release-tools
+          persist-credentials: false
+
+      - name: Work out the next version
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          set -euo pipefail
+          last="$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)"
+          if [ -z "$last" ]; then
+            last="v0.0.0"
+            range="HEAD"
+          else
+            range="${last}..HEAD"
+          fi
+          if [ -z "$(git log --format=%H "$range" | head -n1)" ]; then
+            echo "::error::Nothing merged since ${last}; there is nothing to release."
+            exit 1
+          fi
+
+          if [ "$BUMP" = auto ]; then
+            subjects="$(git log --format=%s "$range")"
+            bodies="$(git log --format=%b "$range")"
+            if grep -qE '^[a-z]+(\([^)]*\))?!:' <<< "$subjects" || grep -q '^BREAKING CHANGE' <<< "$bodies"; then
+              BUMP="major"
+            elif grep -qE '^feat(\([^)]*\))?:' <<< "$subjects"; then
+              BUMP="minor"
+            else
+              BUMP="patch"
+            fi
+          fi
+
+          IFS=. read -r major minor patch <<< "${last#v}"
+          case "$BUMP" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+            *) echo "::error::unknown bump '$BUMP'"; exit 1 ;;
+          esac
+          next="v${major}.${minor}.${patch}"
+          {
+            echo "previous=$last"
+            echo "next=$next"
+            echo "bump=$BUMP"
+          } >> "$GITHUB_OUTPUT"
+          echo "::notice::${last} -> ${next} (${BUMP})"
+
+      - name: Dry run - print the folded changelog and stop
+        if: ${{ inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+          PREVIOUS: ${{ steps.version.outputs.previous }}
+          BUMP_USED: ${{ steps.version.outputs.bump }}
+        run: |
+          set -euo pipefail
+          section="$(python3 .release-tools/.github/scripts/fold_changelog.py "$NEXT" "$(date -u +%F)")"
+          {
+            echo "### Dry run: ${PREVIOUS} -> ${NEXT} (${BUMP_USED})"
+            echo
+            echo "Nothing was pushed. Folded section for \`${NEXT}\`:"
+            echo
+            echo "$section"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Authenticate to GCP (WIF)
+        if: ${{ !inputs.dry_run }}
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ inputs.wif_provider }}
+          service_account: ${{ inputs.ci_sa_email }}
+      - uses: google-github-actions/setup-gcloud@v3
+        if: ${{ !inputs.dry_run }}
+      - name: Fetch App private key
+        if: ${{ !inputs.dry_run }}
+        id: app-pem
+        env:
+          CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT: ${{ inputs.deploy_sa_email }}
+          SECRET_PROJECT: ${{ inputs.secret_project }}
+        run: |
+          set -euo pipefail
+          pem=$(gcloud secrets versions access latest \
+            --secret=github-app-private-key \
+            --project="$SECRET_PROJECT")
+          while IFS= read -r line; do echo "::add-mask::$line"; done <<< "$pem"
+          {
+            echo 'pem<<__PEM_EOF__'
+            echo "$pem"
+            echo '__PEM_EOF__'
+          } >> "$GITHUB_OUTPUT"
+      - name: Mint App token
+        if: ${{ !inputs.dry_run }}
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ inputs.app_id }}
+          private-key: ${{ steps.app-pem.outputs.pem }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Fold the changelog and open the release PR
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          NEXT: ${{ steps.version.outputs.next }}
+          PREVIOUS: ${{ steps.version.outputs.previous }}
+          BUMP_USED: ${{ steps.version.outputs.bump }}
+        run: |
+          set -euo pipefail
+          python3 .release-tools/.github/scripts/fold_changelog.py "$NEXT" "$(date -u +%F)" > /dev/null
+          branch="release/${NEXT}"
+          git config user.name "mokii-agent[bot]"
+          git config user.email "mokii-agent[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add CHANGELOG.md changelog.d
+          git commit -q -m "chore(release): ${NEXT}"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${branch}"
+          gh pr create --repo "$GITHUB_REPOSITORY" --head "$branch" --base main \
+            --title "chore(release): ${NEXT}" \
+            --body "Folds the changelog for ${NEXT} (${PREVIOUS} to ${NEXT}, ${BUMP_USED}). Merging tags the merge commit and publishes the release."
+
+  publish:
+    name: tag and publish
+    if: >-
+      ${{ github.event_name == 'pull_request'
+      && github.event.pull_request.merged == true
+      && startsWith(github.event.pull_request.head.ref, 'release/v')
+      && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ${{ fromJSON(inputs.runs_on) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          persist-credentials: false
+
+      - name: Authenticate to GCP (WIF)
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ inputs.wif_provider }}
+          service_account: ${{ inputs.ci_sa_email }}
+      - uses: google-github-actions/setup-gcloud@v3
+      - name: Fetch App private key
+        id: app-pem
+        env:
+          CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT: ${{ inputs.deploy_sa_email }}
+          SECRET_PROJECT: ${{ inputs.secret_project }}
+        run: |
+          set -euo pipefail
+          pem=$(gcloud secrets versions access latest \
+            --secret=github-app-private-key \
+            --project="$SECRET_PROJECT")
+          while IFS= read -r line; do echo "::add-mask::$line"; done <<< "$pem"
+          {
+            echo 'pem<<__PEM_EOF__'
+            echo "$pem"
+            echo '__PEM_EOF__'
+          } >> "$GITHUB_OUTPUT"
+      - name: Mint App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ inputs.app_id }}
+          private-key: ${{ steps.app-pem.outputs.pem }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Tag the merge commit and publish the release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          set -euo pipefail
+          version="${HEAD_REF#release/}"
+          if ! [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'$version' is not a vMAJOR.MINOR.PATCH release."
+            exit 1
+          fi
+          # The section folded for this version, up to the next `## [`.
+          awk -v v="## [${version}]" '
+            index($0, v) == 1 { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          if ! grep -q '[^[:space:]]' notes.md; then
+            echo "::error::CHANGELOG.md has no section for ${version}."
+            exit 1
+          fi
+          gh release create "$version" --repo "$GITHUB_REPOSITORY" \
+            --target "$SHA" --title "$version" --notes-file notes.md
+          {
+            echo "### Release ${version}"
+            echo
+            echo "Tagged \`${SHA}\` and published the GitHub Release."
+          } >> "$GITHUB_STEP_SUMMARY"
